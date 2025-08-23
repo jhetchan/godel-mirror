@@ -1,0 +1,10 @@
+# Lean / Lake build artifacts
+/build
+.lake
+
+# IDE files
+.vscode/
+.idea/
+*.olean
+*.ilean
+*.c

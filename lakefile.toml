@@ -1,0 +1,10 @@
+name = "godel_mirror"
+version = "0.2.0"
+defaultTargets = ["godel_mirror"]
+
+[[lean_lib]]
+name = "GodelMirror"
+
+[[lean_exe]]
+name = "godel_mirror"
+root = "Main"
