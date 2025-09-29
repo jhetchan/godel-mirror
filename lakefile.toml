@@ -4,6 +4,7 @@ defaultTargets = ["godel_mirror"]
 
 [[lean_lib]]
 name = "GodelMirror"
+srcDir = "."
 
 [[lean_exe]]
 name = "godel_mirror"

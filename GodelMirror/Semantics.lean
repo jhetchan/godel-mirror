@@ -55,3 +55,15 @@ def step (t : MirrorSystem) : MirrorSystem :=
 def run : MirrorSystem → Nat → MirrorSystem
 | t, 0 => t
 | t, (Nat.succ n) => run (step t) n
+
+-- Simp lemmas for specific cases
+@[simp] theorem is_paradox_self_ref : is_paradox self_ref = true := rfl
+@[simp] theorem is_paradox_named_self_ref (n : String) : is_paradox (named n self_ref) = true := rfl
+@[simp] theorem paradox_self_ref : paradox self_ref = true := rfl
+@[simp] theorem paradox_base : paradox base = false := rfl
+@[simp] theorem paradox_cap (t : MirrorSystem) : paradox (cap t) = false := rfl
+@[simp] theorem integrate_cap (t : MirrorSystem) : integrate (cap t) = is_paradox t := rfl
+@[simp] theorem is_integrate_def (t : MirrorSystem) : is_integrate t = integrate t := rfl
+@[simp] theorem valid_reentry_enter_cap (t : MirrorSystem) : valid_reentry (enter (cap t)) = true := rfl
+@[simp] theorem run_zero (t : MirrorSystem) : run t 0 = t := rfl
+@[simp] theorem run_succ (t : MirrorSystem) (n : Nat) : run t (Nat.succ n) = run (step t) n := rfl
