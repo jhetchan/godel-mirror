@@ -76,3 +76,22 @@ theorem label_preservation (s : String) (t t' : MirrorSystem) :
   · unfold is_integrate at *; simp at *  -- Normal vs Integrate - contradiction
   · unfold valid_reentry at *; simp at *  -- Normal vs Reentry - contradiction
   · cases h  -- Both Normal: node (named s t) = named s t' → node t = t'
+
+/-
+  NOTE: Completion and Weak Normalization (Section 6 of paper)
+
+  These theorems are OMITTED from the workshop build because they require
+  proving properties of partial recursive functions, which is problematic in Lean 4.
+  The current implementation uses a partial function `completeFuel` with a fuel parameter
+  to demonstrate the idea, but this is not suitable for formal proofs.
+
+  For the LMCS journal version, these should be reformulated using an inductive
+  relation for completion instead of a partial function.
+
+  Key theorems to prove in the relational formulation:
+  - Weak normalization for stratified terms
+  - Confluence of completion steps
+  - Canonical form uniqueness
+
+  The current workshop demo uses completeFuel for #eval demonstrations only.
+-/

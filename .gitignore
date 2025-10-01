@@ -8,3 +8,6 @@
 *.olean
 *.ilean
 *.c
+
+# macOS
+.DS_Store

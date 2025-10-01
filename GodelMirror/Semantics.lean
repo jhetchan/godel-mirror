@@ -20,7 +20,7 @@ def is_paradox (t : MirrorSystem) : Bool :=
   | self_ref => true
   | _ => paradox t
 
--- Predicate to identify a term that has integrated a paradox (formerly emergence)
+-- Predicate to identify a term that has integrated a paradox
 def integrate : MirrorSystem → Bool
 | cap ms => is_paradox ms
 | named _ ms => integrate ms
@@ -67,3 +67,33 @@ def run : MirrorSystem → Nat → MirrorSystem
 @[simp] theorem valid_reentry_enter_cap (t : MirrorSystem) : valid_reentry (enter (cap t)) = true := rfl
 @[simp] theorem run_zero (t : MirrorSystem) : run t 0 = t := rfl
 @[simp] theorem run_succ (t : MirrorSystem) (n : Nat) : run t (Nat.succ n) = run (step t) n := rfl
+
+-- Optional: fuel-based completion for demo purposes only (not for proofs)
+-- This shows the completion behavior without requiring termination proofs
+
+-- Resolve one paradox by wrapping it: paradox → node(enter(cap(paradox)))
+def resolveOne (t : MirrorSystem) : MirrorSystem :=
+  if is_paradox t then node (enter (cap t)) else t
+
+-- Fuel-based completion: recursively resolve paradoxes with a fuel limit
+-- This is ONLY for #eval demonstrations, not for formal proofs
+def completeFuel : Nat → MirrorSystem → MirrorSystem
+| 0,     t => t
+| n+1,   t =>
+  match t with
+  | node u  => node (completeFuel n u)
+  | cap u   => resolveOne (cap (completeFuel n u))
+  | enter u => resolveOne (enter (completeFuel n u))
+  | named s u =>
+      if is_paradox (named s u) then resolveOne (named s u)
+      else named s (completeFuel n u)
+  | _ => resolveOne t
+
+-- Helper: check if term contains any paradoxical subterms
+def contains_paradox : MirrorSystem → Bool
+| base => false
+| node t => contains_paradox t
+| self_ref => true
+| cap t => contains_paradox t
+| enter t => contains_paradox t
+| named _ t => contains_paradox t
