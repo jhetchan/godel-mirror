@@ -77,6 +77,28 @@ Emoji-based output makes the transformation cycle visually clear:
 - 🔥 Encapsulation (cap)
 - 🌱 Reentry (enter)
 - 🔁 Stable nodes
+- 📦 Base terms (non-paradoxical)
+
+### Paradox Detection
+The system selectively detects paradoxes - it doesn't hallucinate them where they don't exist:
+
+**Paradoxical term** (`self_ref`):
+```
+Step 0: 🪞 self_ref
+Step 1: 🔥 cap(🪞 self_ref)      ← Detected! Encapsulate
+Step 2: 🌱 enter(🔥 cap(...))     ← Reentry
+Step 3: 🔁 node(🌱 enter(...))    ← Stabilize
+```
+
+**Non-paradoxical term** (`base`):
+```
+Step 0: 📦 base
+Step 1: 🔁 node(📦 base)          ← No cap/enter - straight to node
+Step 2: 🔁 node(🔁 node(...))     ← Just wraps normally
+Step 3: 🔁 node(🔁 node(...))     ← Continues wrapping
+```
+
+Only terms containing `self_ref` trigger the paradox resolution cycle. Normal terms are left alone.
 
 ---
 
@@ -117,9 +139,13 @@ def nested := named "Outer" (named "Inner" self_ref)
 
 -- Demo 3: Raw self-reference
 def simple := self_ref
+
+-- Demo 4: Non-paradoxical terms (proves selective detection)
+def normal := base
+def labeled := named "Foo" base
 ```
 
-Each demo shows the transformation cycle with step-by-step emoji traces, plus automated assertions verifying the controlled reaction.
+Each demo shows the transformation cycle with step-by-step emoji traces, plus automated assertions verifying the controlled reaction. Demo 4 proves the system doesn't hallucinate paradoxes - only `self_ref` triggers the cap→enter→node cycle.
 
 ---
 

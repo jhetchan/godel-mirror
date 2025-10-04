@@ -49,6 +49,18 @@ def liar : MirrorSystem := named "Liar" self_ref
   numbered_trace (run_trace simple 3)
   IO.println ""
 
+-- Demo 4: Non-paradoxical terms (shows system doesn't hallucinate paradoxes)
+#eval! do
+  IO.println "--- Non-paradoxical: pure base (fuel = 3) ---"
+  numbered_trace (run_trace base 3)
+  IO.println ""
+
+#eval! do
+  IO.println "--- Non-paradoxical: named 'Foo' base (fuel = 3) ---"
+  let normal := named "Foo" base
+  numbered_trace (run_trace normal 3)
+  IO.println ""
+
 -- Assertion: Controlled reaction is deterministic
 #eval! do
   if run liar 3 == node (enter (cap liar)) then
